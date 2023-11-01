@@ -1,5 +1,7 @@
 # WhatsMyName-Client (WMNC)
 
+This is external tool for: https://github.com/WebBreacher/WhatsMyName/
+
 While attempting to develop the WhatsMyName project, I encountered several issues. Other available tools did not handle http-headers or POST requests. That's why I wrote my own script implementing the principles of WhatsMyName.
 
 My version of the client supports 'request headers' and POST requests. I tried to follow all the guidelines provided in the wmn-data-schema.json file (https://github.com/WebBreacher/WhatsMyName/blob/main/CONTRIBUTING.md#format-of-the-json-file).
