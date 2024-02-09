@@ -179,9 +179,9 @@ def func_check_website(website_data, username):
                 param_data = param.split("=")
                 parameters[param_data[0]] = param_data[1].format(account=username)
 
-            res = requests.post(uri_check, data=parameters, headers=requestHeaders, timeout=DEFAULT_REQUEST_TIMEOUT)
+            res = requests.post(uri_check, data=parameters, headers=requestHeaders, timeout=DEFAULT_REQUEST_TIMEOUT, allow_redirects=False)
         else:
-            res = requests.get(uri_check, headers=requestHeaders, timeout=DEFAULT_REQUEST_TIMEOUT)
+            res = requests.get(uri_check, headers=requestHeaders, timeout=DEFAULT_REQUEST_TIMEOUT, allow_redirects=False)
 
         if "uri_pretty" in website_data:
             user_url = website_data['uri_pretty'].format(account=username)
@@ -190,6 +190,9 @@ def func_check_website(website_data, username):
 
         estring_pos = res.text.find(website_data["e_string"]) > 0
         estring_neg = res.text.find(website_data["m_string"]) > 0
+
+        if website_data["e_string"] == "" and res.text == "":
+            estring_pos = True
 
         if res.status_code == website_data['e_code'] and estring_pos:
             return True, user_url, "Found"
@@ -238,18 +241,6 @@ def func_download_file(url, local_filename):
 # wrapper
 if __name__ == "__main__":
     try:
-        print("""░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░▒█░░▒█░█░░░░█▀▀▄░▀█▀░█▀▀░▒█▀▄▀█░░░░░░▒█▄░▒█░█▀▀▄░█▀▄▀█░█▀▀░
-░▒█▒█▒█░█▀▀█░█▄▄█░░█░░▀▀▄░▒█▒█▒█░█▄▄█░▒█▒█▒█░█▄▄█░█░▀░█░█▀▀░
-░▒▀▄▀▄▀░▀░░▀░▀░░▀░░▀░░▀▀▀░▒█░░▒█░▄▄▄▀░▒█░░▀█░▀░░▀░▀░░▒▀░▀▀▀░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░▒█▀▀▄░█░░░▀░░█▀▀░█▀▀▄░▀█▀░░░░░    WhatsMyName-Client   ░░░░
-░▒█░░░░█░░░█▀░█▀▀░█░▒█░░█░░░░░░ v0.1 by grabowskiadrian ░░░░
-░▒█▄▄▀░▀▀░▀▀▀░▀▀▀░▀░░▀░░▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-Look: https://github.com/WebBreacher/WhatsMyName""")
-
         if len(sys.argv) > 1 and sys.argv[1] == 'update':
             parser = argparse.ArgumentParser(prog='python3 wmnc.py update',
                                              description="Download the newest version of wmn-data.json from the official GitHub repository.")
@@ -299,6 +290,18 @@ Look: https://github.com/WebBreacher/WhatsMyName""")
 
             action_list_categories(args.list)
             exit(0)
+
+        print("""░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░▒█░░▒█░█░░░░█▀▀▄░▀█▀░█▀▀░▒█▀▄▀█░░░░░░▒█▄░▒█░█▀▀▄░█▀▄▀█░█▀▀░
+░▒█▒█▒█░█▀▀█░█▄▄█░░█░░▀▀▄░▒█▒█▒█░█▄▄█░▒█▒█▒█░█▄▄█░█░▀░█░█▀▀░
+░▒▀▄▀▄▀░▀░░▀░▀░░▀░░▀░░▀▀▀░▒█░░▒█░▄▄▄▀░▒█░░▀█░▀░░▀░▀░░▒▀░▀▀▀░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░▒█▀▀▄░█░░░▀░░█▀▀░█▀▀▄░▀█▀░░░░░    WhatsMyName-Client   ░░░░
+░▒█░░░░█░░░█▀░█▀▀░█░▒█░░█░░░░░░ v0.1 by grabowskiadrian ░░░░
+░▒█▄▄▀░▀▀░▀▀▀░▀▀▀░▀░░▀░░▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+Look: https://github.com/WebBreacher/WhatsMyName""")
 
         print("")
 
