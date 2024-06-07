@@ -232,7 +232,7 @@ def func_download_file(url, local_filename):
         response = requests.get(url)
         response.raise_for_status()
 
-        with open(local_filename, "w") as f:
+        with open(local_filename, "w", encoding="utf-8") as f:
             f.write(response.text)
         print(f"" + COLOR_OKGREEN + "[+]" + COLOR_ENDC + f" {local_filename} updated")
     except requests.exceptions.RequestException as e:
